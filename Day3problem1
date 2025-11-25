@@ -1,0 +1,44 @@
+// File: Day03/TwoSumSorted.java
+// Day03 - Problem 1: Two Sum for sorted array using two-pointers
+
+import java.util.Arrays;
+
+public class TwoSumSorted {
+
+    /**
+     * Returns indices [i,j] (i<j) such that nums[i] + nums[j] == target.
+     * If no solution, returns null.
+     * Assumes nums is sorted in non-decreasing order.
+     */
+    public static int[] twoSumSorted(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int sum = nums[left] + nums[right];
+            if (sum == target) {
+                return new int[]{left, right};
+            } else if (sum < target) {
+                left++;              // need larger sum
+            } else {
+                right--;             // need smaller sum
+            }
+        }
+        return null; // no pair found
+    }
+
+    public static void main(String[] args) {
+        runTest(new int[]{1,2,3,4,6}, 6, new int[]{1,3});   // 2+4=6
+        runTest(new int[]{2,3,4}, 6, new int[]{0,2});       // 2+4=6
+        runTest(new int[]{-4,-1,0,3,5,9}, 4, new int[]{1,5}); // -1+5=4
+        runTest(new int[]{1,1,2,3}, 2, new int[]{0,1});     // duplicates
+        System.out.println("TwoSumSorted tests finished.");
+    }
+
+    private static void runTest(int[] nums, int target, int[] expected) {
+        int[] res = twoSumSorted(nums, target);
+        if (res == null) throw new AssertionError("Expected pair but got null. nums=" + Arrays.toString(nums));
+        if (nums[res[0]] + nums[res[1]] != target) {
+            throw new AssertionError("Wrong pair returned for nums=" + Arrays.toString(nums) + " got=" + Arrays.toString(res));
+        }
+        System.out.println("PASS: " + Arrays.toString(nums) + " target=" + target + " -> indices=" + Arrays.toString(res));
+    }
+}

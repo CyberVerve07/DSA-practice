@@ -1,0 +1,49 @@
+// File: Day03/LongestUniqueSubstr.java
+// Day03 - Problem 2: Longest substring without repeating characters (sliding window)
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class LongestUniqueSubstr {
+
+    /**
+     * Returns length of longest substring without repeating characters.
+     */
+    public static int lengthOfLongestUniqueSubstr(String s) {
+        // map char -> last index seen
+        Map<Character, Integer> lastSeen = new HashMap<>();
+        int maxLen = 0;
+        int left = 0; // window start
+
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            if (lastSeen.containsKey(c)) {
+                // move left to one past last seen index of c
+                // but never move left backwards
+                left = Math.max(left, lastSeen.get(c) + 1);
+            }
+            lastSeen.put(c, right);
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+        return maxLen;
+    }
+
+    public static void main(String[] args) {
+        runTest("abcabcbb", 3);
+        runTest("bbbbb", 1);
+        runTest("pwwkew", 3);
+        runTest("", 0);
+        runTest(" ", 1);
+        runTest("au", 2);
+        runTest("abba", 2); // careful case
+        System.out.println("LongestUniqueSubstr tests finished.");
+    }
+
+    private static void runTest(String s, int expected) {
+        int res = lengthOfLongestUniqueSubstr(s);
+        if (res != expected) {
+            throw new AssertionError("FAILED: s=\"" + s + "\" expected=" + expected + " got=" + res);
+        }
+        System.out.println("PASS: \"" + s + "\" -> " + res);
+    }
+}

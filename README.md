@@ -100,3 +100,20 @@ java DayXX/ClassName
 
 ````
 
+
+# Day 04 — Binary Search + Move Zeroes
+Problems:
+1. BinarySearch.java — classical binary search (O(log n)).
+2. MoveZeroes.java — two-pointer in-place array compaction (O(n)).
+Notes:
+- Binary search fails if you use low < high instead of <=.
+- MoveZeroes uses read/write pointer pattern.
+
+
+# Day 05 — First & Last Position in Sorted Array
+- Implemented using two modified binary searches.
+- `findFirst` -> force search left.
+- `findLast` -> force search right.
+- Time: O(log n), Space: O(1)
+
+

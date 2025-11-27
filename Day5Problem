@@ -1,0 +1,76 @@
+// File: Day05/FirstLastPosition.java
+// Day05 - Find First and Last Position of Element in Sorted Array
+// Using two modified binary searches (O(log n))
+
+import java.util.Arrays;
+
+public class FirstLastPosition {
+
+    public static int[] searchRange(int[] nums, int target) {
+        int first = findFirst(nums, target);
+        int last = findLast(nums, target);
+        return new int[]{first, last};
+    }
+
+    // Find FIRST occurrence (leftmost)
+    private static int findFirst(int[] nums, int target) {
+        int low = 0, high = nums.length - 1;
+        int ans = -1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (nums[mid] == target) {
+                ans = mid;    
+                high = mid - 1;  // move LEFT
+            } else if (nums[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+
+    // Find LAST occurrence (rightmost)
+    private static int findLast(int[] nums, int target) {
+        int low = 0, high = nums.length - 1;
+        int ans = -1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (nums[mid] == target) {
+                ans = mid;
+                low = mid + 1;   // move RIGHT
+            } else if (nums[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        test(new int[]{5,7,7,8,8,10}, 8, new int[]{3,4});
+        test(new int[]{5,7,7,8,8,10}, 6, new int[]{-1,-1});
+        test(new int[]{1}, 1, new int[]{0,0});
+        test(new int[]{}, 3, new int[]{-1,-1});
+        test(new int[]{2,2,2,2}, 2, new int[]{0,3});
+        System.out.println("All tests passed.");
+    }
+
+    private static void test(int[] nums, int target, int[] expected) {
+        int[] res = searchRange(nums, target);
+        if (!Arrays.equals(res, expected)) {
+            throw new AssertionError("FAILED: nums=" + Arrays.toString(nums)
+                    + " target=" + target + " expected=" + Arrays.toString(expected)
+                    + " got=" + Arrays.toString(res));
+        }
+        System.out.println("PASS: " + Arrays.toString(nums)
+                + " target=" + target + " -> " + Arrays.toString(res));
+    }
+}

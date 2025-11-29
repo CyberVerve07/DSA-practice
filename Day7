@@ -1,0 +1,29 @@
+// Day06 - MinSubarraySum.java (copy exactly)
+import java.util.Arrays;
+public class MinSubarraySum {
+    public static int minSubArrayLen(int target, int[] nums) {
+        int left = 0, sum = 0;
+        int minLen = Integer.MAX_VALUE;
+        for (int right = 0; right < nums.length; right++) {
+            sum += nums[right];
+            while (sum >= target) {
+                minLen = Math.min(minLen, right - left + 1);
+                sum -= nums[left];
+                left++;
+            }
+        }
+        return minLen == Integer.MAX_VALUE ? 0 : minLen;
+    }
+    public static void main(String[] args) {
+        runTest(new int[]{2,3,1,2,4,3}, 7, 2);
+        runTest(new int[]{1,4,4}, 4, 1);
+        runTest(new int[]{1,1,1,1,1,1}, 11, 0);
+        runTest(new int[]{1,2,3,4,5}, 11, 3);
+        System.out.println("MinSubarraySum: All tests passed.");
+    }
+    private static void runTest(int[] nums, int target, int expected) {
+        int res = minSubArrayLen(target, nums);
+        if (res != expected) throw new AssertionError("FAILED: nums=" + Arrays.toString(nums) + " target=" + target + " expected=" + expected + " got=" + res);
+        System.out.println("PASS: target=" + target + " nums=" + Arrays.toString(nums) + " -> " + res);
+    }
+}

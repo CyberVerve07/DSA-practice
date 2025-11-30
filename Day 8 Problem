@@ -1,0 +1,53 @@
+// File: Day07/GroupAnagrams.java
+// Day07 - Problem 1: Group Anagrams (HashMap with normalized key)
+
+import java.util.*;
+
+public class GroupAnagrams {
+
+    public static List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> groups = new HashMap<>();
+        for (String s : strs) {
+            char[] arr = s.toCharArray();
+            Arrays.sort(arr);
+            String key = new String(arr); // normalized key
+            groups.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+        }
+        return new ArrayList<>(groups.values());
+    }
+
+    // Simple test harness that checks groups ignoring order
+    public static void main(String[] args) {
+        runTest(new String[]{"eat","tea","tan","ate","nat","bat"},
+                Arrays.asList(
+                        Arrays.asList("eat","tea","ate"),
+                        Arrays.asList("tan","nat"),
+                        Arrays.asList("bat")
+                ));
+        runTest(new String[]{""}, Arrays.asList(Arrays.asList("")));
+        runTest(new String[]{"a"}, Arrays.asList(Arrays.asList("a")));
+        System.out.println("GroupAnagrams: Tests finished.");
+    }
+
+    private static void runTest(String[] input, List<List<String>> expectedGroups) {
+        List<List<String>> out = groupAnagrams(input);
+        // convert to multiset-of-multisets style check (order-insensitive)
+        Map<String, Integer> countMap = new HashMap<>();
+        for (List<String> grp : out) {
+            List<String> copy = new ArrayList<>(grp);
+            Collections.sort(copy);
+            countMap.put(copy.toString(), countMap.getOrDefault(copy.toString(), 0) + 1);
+        }
+        for (List<String> grp : expectedGroups) {
+            List<String> copy = new ArrayList<>(grp);
+            Collections.sort(copy);
+            String key = copy.toString();
+            if (!countMap.containsKey(key) || countMap.get(key) == 0) {
+                throw new AssertionError("FAILED: input=" + Arrays.toString(input) +
+                        " expected group containing " + grp + " but not found. Output=" + out);
+            }
+            countMap.put(key, countMap.get(key) - 1);
+        }
+        System.out.println("PASS: " + Arrays.toString(input) + " -> " + out);
+    }
+}

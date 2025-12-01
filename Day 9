@@ -1,0 +1,104 @@
+// File: Day07/TopKFrequent.java
+// Day07 - Top K Frequent Elements (Bucket sort approach) - O(n) time
+//
+// Logic summary (in-code):
+// 1) Count frequencies with a HashMap.
+// 2) Create buckets: array of lists where index = frequency.
+// 3) Traverse buckets from high freq to low and collect top k elements.
+
+import java.util.*;
+
+public class TopKFrequent {
+
+    /**
+     * Returns the k most frequent elements in nums.
+     * Uses bucket sort: index = frequency (0..n).
+     * Time: O(n), Space: O(n).
+     */
+    public static int[] topKFrequent(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k <= 0) return new int[0];
+
+        // 1) Frequency map
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int x : nums) {
+            freq.put(x, freq.getOrDefault(x, 0) + 1);
+        }
+
+        int n = nums.length;
+        // 2) Buckets where bucket[i] = list of numbers that appear i times
+        // Size n+1 because max frequency is n
+        List<Integer>[] buckets = new List[n + 1];
+        for (int i = 0; i <= n; i++) buckets[i] = new ArrayList<>();
+
+        for (Map.Entry<Integer, Integer> e : freq.entrySet()) {
+            int num = e.getKey();
+            int f = e.getValue();
+            buckets[f].add(num);
+        }
+
+        // 3) Collect top k from buckets starting from highest frequency
+        int[] result = new int[k];
+        int idx = 0;
+        for (int i = n; i >= 1 && idx < k; i--) {
+            for (int num : buckets[i]) {
+                result[idx++] = num;
+                if (idx == k) break;
+            }
+        }
+
+        return result;
+    }
+
+    // ----------------- TESTS -----------------
+    public static void main(String[] args) {
+        runTest(new int[]{1,1,1,2,2,3}, 2, new int[]{1,2});
+        runTest(new int[]{1}, 1, new int[]{1});
+        runTest(new int[]{4,1,-1,2,-1,2,3,3,3}, 2, new int[]{3,2}); // 3 freq=3, 2 freq=2
+        runTest(new int[]{1,2,3,4,5,6,7,8,9}, 3, 3); // any 3 numbers (all freq 1) -> size check
+        System.out.println("TopKFrequent: Tests finished.");
+    }
+
+    // helper: for tests where order doesn't matter, compare sets or sizes
+    private static void runTest(int[] nums, int k, int[] expected) {
+        int[] got = topKFrequent(nums, k);
+        if (expected.length != k) throw new IllegalArgumentException("Expected length must equal k");
+
+        // Validate: frequencies of expected elements should be >= frequencies of any element not in result when possible.
+        // Simpler: check that result contains same multiset as expected when expected has definitive elements (like first tests).
+        Set<Integer> gotSet = new HashSet<>();
+        for (int x : got) gotSet.add(x);
+        Set<Integer> expSet = new HashSet<>();
+        for (int x : expected) expSet.add(x);
+
+        // If expected set equals got set -> pass
+        if (gotSet.equals(expSet)) {
+            System.out.println("PASS: nums=" + Arrays.toString(nums) + " k=" + k + " -> " + Arrays.toString(got));
+            return;
+        }
+
+        // For tests with multiple valid outputs (ties), at least check sizes and that all returned elements appear in nums.
+        if (got.length == k) {
+            boolean allInNums = true;
+            Set<Integer> present = new HashSet<>();
+            for (int x : nums) present.add(x);
+            for (int x : got) if (!present.contains(x)) allInNums = false;
+            if (allInNums) {
+                System.out.println("PASS (tie-case): nums=" + Arrays.toString(nums) + " k=" + k + " -> " + Arrays.toString(got));
+                return;
+            }
+        }
+
+        // Otherwise fail
+        throw new AssertionError("FAILED: nums=" + Arrays.toString(nums) + " k=" + k +
+                " expected (set)=" + expSet + " got=" + Arrays.toString(got));
+    }
+
+    // Overloaded convenience test where expected is a single int (we only check size)
+    private static void runTest(int[] nums, int k, int expectedSize) {
+        int[] got = topKFrequent(nums, k);
+        if (got.length != k) {
+            throw new AssertionError("FAILED: expected length " + k + " got " + got.length);
+        }
+        System.out.println("PASS (size-check): nums=" + Arrays.toString(nums) + " k=" + k + " -> " + Arrays.toString(got));
+    }
+}

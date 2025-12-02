@@ -1,0 +1,36 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Arrays;
+
+public class TwoSumEasy {
+
+    public static int[] twoSum(int[] nums, int target) {
+        // Map stores number -> index
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int need = target - nums[i];
+
+            // If needed number already seen → pair found
+            if (map.containsKey(need)) {
+                return new int[]{map.get(need), i};
+            }
+
+            // Otherwise store current number's index
+            map.put(nums[i], i);
+        }
+
+        return null; // if no solution
+    }
+
+    public static void main(String[] args) {
+        // Test 1
+        System.out.println(Arrays.toString(twoSum(new int[]{2, 7, 11, 15}, 9))); // [0,1]
+
+        // Test 2
+        System.out.println(Arrays.toString(twoSum(new int[]{3,2,4}, 6))); // [1,2]
+
+        // Test 3
+        System.out.println(Arrays.toString(twoSum(new int[]{3,3}, 6))); // [0,1]
+    }
+}

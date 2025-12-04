@@ -1,0 +1,37 @@
+public class SecondLargest {
+
+    public static int findSecondLargest(int[] nums) {
+
+        if (nums == null || nums.length < 2)
+            return -1; // not enough elements
+
+        int largest = Integer.MIN_VALUE;
+        int secondLargest = Integer.MIN_VALUE;
+
+        for (int num : nums) {
+            
+            // Case 1: new largest found
+            if (num > largest) {
+                secondLargest = largest;
+                largest = num;
+            }
+            // Case 2: num is between largest and secondLargest (distinct)
+            else if (num < largest && num > secondLargest) {
+                secondLargest = num;
+            }
+        }
+
+        // If secondLargest never updated → no distinct second largest
+        if (secondLargest == Integer.MIN_VALUE)
+            return -1;
+
+        return secondLargest;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(findSecondLargest(new int[]{10, 5, 20, 8}));  // 10
+        System.out.println(findSecondLargest(new int[]{3, 3, 3}));       // -1
+        System.out.println(findSecondLargest(new int[]{1}));             // -1
+        System.out.println(findSecondLargest(new int[]{5, 1, 2, 4, 3})); // 4
+    }
+}

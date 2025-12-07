@@ -1,0 +1,57 @@
+public class DivideTwoIntegers {
+
+    public static int divide(int dividend, int divisor) {
+        // CRITICAL: Handle Integer.MIN_VALUE overflow edge case
+        // -2147483648 / -1 would be 2147483648, which exceeds Integer.MAX_VALUE (2147483647)
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+
+        // Determine sign of the result
+        // XOR (^) is 1 if bits are different (signs are different), 0 if same
+        boolean negative = (dividend < 0) ^ (divisor < 0);
+
+        // Convert to long to safely handle absolute values of Integer.MIN_VALUE
+        long absDividend = Math.abs((long) dividend);
+        long absDivisor = Math.abs((long) divisor);
+
+        int result = 0;
+
+        // Loop while the dividend is still larger than the divisor
+        while (absDividend >= absDivisor) {
+            long tempDivisor = absDivisor;
+            int multiple = 1;
+
+            // Shift left (multiply by 2) until we exceed the dividend
+            // We verify (tempDivisor << 1) <= absDividend BEFORE shifting to avoid overshooting
+            while (absDividend >= (tempDivisor << 1)) {
+                tempDivisor <<= 1;
+                multiple <<= 1;
+            }
+
+            // Subtract the chunk we found
+            absDividend -= tempDivisor;
+            result += multiple;
+        }
+
+        // Apply the calculated sign
+        return negative ? -result : result;
+    }
+
+    public static void main(String[] args) {
+        // Test Case 1: Standard
+        int a = 10;
+        int b = 3;
+        System.out.println("10 / 3 = " + divide(a, b)); // Expected: 3
+
+        // Test Case 2: Negative
+        int c = 7;
+        int d = -3;
+        System.out.println("7 / -3 = " + divide(c, d)); // Expected: -2
+
+        // Test Case 3: Edge Case (Overflow)
+        int e = Integer.MIN_VALUE;
+        int f = -1;
+        System.out.println("MIN_VALUE / -1 = " + divide(e, f)); // Expected: 2147483647 (MAX_VALUE)
+    }
+}

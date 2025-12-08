@@ -1,0 +1,52 @@
+import java.util.PriorityQueue;
+import java.util.Comparator;
+import java.util.NoSuchElementException;
+
+class PriorityTaskQueue {
+    private PriorityQueue<Task> heap;
+    private PriorityPolicy policy;
+
+    public PriorityTaskQueue(PriorityPolicy policy) {
+        setPolicy(policy);
+    }
+
+    public void setPolicy(PriorityPolicy newPolicy) {
+        this.policy = newPolicy;
+
+        // Rebuild heap with new comparator if already initialized
+        if (heap == null) {
+            heap = new PriorityQueue<>(toComparator(newPolicy));
+        } else {
+            PriorityQueue<Task> newHeap = new PriorityQueue<>(toComparator(newPolicy));
+            newHeap.addAll(heap);
+            heap = newHeap;
+        }
+    }
+
+    private Comparator<Task> toComparator(PriorityPolicy policy) {
+        return policy::compare;
+    }
+
+    public void add(Task task) {
+        heap.offer(task);
+    }
+
+    public Task peek() {
+        return heap.peek();
+    }
+
+    public Task poll() {
+        if (heap.isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        return heap.poll();
+    }
+
+    public int size() {
+        return heap.size();
+    }
+
+    public boolean isEmpty() {
+        return heap.isEmpty();
+    }
+}

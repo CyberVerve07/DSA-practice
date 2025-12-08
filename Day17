@@ -1,0 +1,29 @@
+public class SortedAndRotated {
+
+    // Returns true if array is sorted in non-decreasing order and then rotated
+    public static boolean check(int[] nums) {
+        int n = nums.length;
+        int countDrops = 0; // kitni baar nums[i] > nums[i+1] mila
+
+        for (int i = 0; i < n; i++) {
+            int next = nums[(i + 1) % n]; // last ke baad first ko compare karne ke liye % n
+            if (nums[i] > next) {
+                countDrops++;
+                if (countDrops > 1) {
+                    return false; // 1 se zyada break in sorted order -> not sorted+rotated
+                }
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(check(new int[]{3, 4, 5, 1, 2})); // true
+        System.out.println(check(new int[]{2, 1, 3, 4}));     // false
+        System.out.println(check(new int[]{1, 2, 3, 4, 5}));  // true
+        System.out.println(check(new int[]{2, 2, 2, 2}));     // true
+        System.out.println(check(new int[]{2, 3, 4, 5, 1}));  // true
+        System.out.println(check(new int[]{4, 5, 1, 2, 3}));  // true
+        System.out.println(check(new int[]{3, 1, 2}));        // false
+    }
+}

@@ -1,0 +1,53 @@
+public class CountOccurrences {
+
+    public static int count(int[] nums, int x) {
+        int first = findFirst(nums, x);
+        if (first == -1) return 0; // not found at all
+        int last = findLast(nums, x);
+        return last - first + 1;
+    }
+
+    // binary search for first index of x
+    private static int findFirst(int[] nums, int x) {
+        int low = 0, high = nums.length - 1, ans = -1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (nums[mid] == x) {
+                ans = mid;
+                high = mid - 1; // move left to find first
+            } else if (nums[mid] < x) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+
+    // binary search for last index of x
+    private static int findLast(int[] nums, int x) {
+        int low = 0, high = nums.length - 1, ans = -1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (nums[mid] == x) {
+                ans = mid;
+                low = mid + 1; // move right to find last
+            } else if (nums[mid] < x) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(count(new int[]{1,2,2,2,3,4}, 2)); // 3
+        System.out.println(count(new int[]{1,1,2,3,4}, 1));   // 2
+        System.out.println(count(new int[]{1,3,5,7}, 4));     // 0
+    }
+}

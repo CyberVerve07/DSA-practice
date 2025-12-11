@@ -1,0 +1,36 @@
+public class LongestUniqueSubstring {
+
+    // Returns length of longest substring without repeating characters
+    public static int lengthOfLongestUniqueSubstr(String s) {
+        if (s == null || s.isEmpty()) return 0;
+
+        // last index seen for characters (ASCII/extended). Initialize to -1.
+        int[] last = new int[256];
+        for (int i = 0; i < last.length; i++) last[i] = -1;
+
+        int maxLen = 0;
+        int left = 0; // window start
+
+        for (int right = 0; right < s.length(); right++) {
+            int c = s.charAt(right);
+            // if char was seen inside current window, move left to one past its last index
+            if (last[c] >= left) {
+                left = last[c] + 1;
+            }
+            last[c] = right; // update last seen index
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+
+        return maxLen;
+    }
+
+    // Tests / examples
+    public static void main(String[] args) {
+        System.out.println(lengthOfLongestUniqueSubstr("abcabcbb")); // 3
+        System.out.println(lengthOfLongestUniqueSubstr("bbbbb"));    // 1
+        System.out.println(lengthOfLongestUniqueSubstr("pwwkew"));   // 3
+        System.out.println(lengthOfLongestUniqueSubstr(""));         // 0
+        System.out.println(lengthOfLongestUniqueSubstr("au"));       // 2
+        System.out.println(lengthOfLongestUniqueSubstr("abba"));     // 2
+    }
+}

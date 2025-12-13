@@ -1,0 +1,18 @@
+public class SingleNonRepeatingXOR {
+
+    public static int findSingle(int[] nums) {
+        int xor = 0;
+
+        for (int num : nums) {
+            xor = xor ^ num;
+        }
+
+        return xor;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(findSingle(new int[]{1,1,2,2,3,4,4})); // 3
+        System.out.println(findSingle(new int[]{3,3,7,7,10,11,11})); // 10
+        System.out.println(findSingle(new int[]{5})); // 5
+    }
+}

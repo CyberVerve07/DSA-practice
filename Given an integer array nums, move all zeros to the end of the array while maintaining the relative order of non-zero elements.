@@ -1,0 +1,38 @@
+public class MoveZeros {
+
+    public static void moveZeroes(int[] nums) {
+        int pos = 0; // position for next non-zero
+
+        // Step 1: move all non-zero elements to the front
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
+                nums[pos] = nums[i];
+                pos++;
+            }
+        }
+
+        // Step 2: fill the remaining positions with zeros
+        while (pos < nums.length) {
+            nums[pos] = 0;
+            pos++;
+        }
+    }
+
+    // Test
+    public static void main(String[] args) {
+        int[] arr1 = {0, 1, 0, 3, 12};
+        moveZeroes(arr1);
+        print(arr1); // [1, 3, 12, 0, 0]
+
+        int[] arr2 = {0, 0, 1};
+        moveZeroes(arr2);
+        print(arr2); // [1, 0, 0]
+    }
+
+    private static void print(int[] nums) {
+        for (int n : nums) {
+            System.out.print(n + " ");
+        }
+        System.out.println();
+    }
+}

@@ -1,0 +1,27 @@
+public class EquilibriumIndex {
+
+    public static int findEquilibriumIndex(int[] nums) {
+        int totalSum = 0;
+        for (int x : nums) {
+            totalSum += x;
+        }
+
+        int leftSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            // rightSum = totalSum - leftSum - nums[i]
+            if (leftSum == totalSum - leftSum - nums[i]) {
+                return i;
+            }
+            leftSum += nums[i];
+        }
+
+        return -1; // no equilibrium index
+    }
+
+    public static void main(String[] args) {
+        System.out.println(findEquilibriumIndex(new int[]{1,7,3,6,5,6})); // 3
+        System.out.println(findEquilibriumIndex(new int[]{1,2,3}));       // -1
+        System.out.println(findEquilibriumIndex(new int[]{2,1,-1}));      // 0
+        System.out.println(findEquilibriumIndex(new int[]{0,0,0,0}));     // 0 (any valid index)
+    }
+}

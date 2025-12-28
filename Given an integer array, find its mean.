@@ -1,0 +1,11 @@
+public class MeanOfArray {
+    public static double mean(int[] nums) {
+        double sum = 0;
+        for (int x : nums) sum += x;
+        return sum / nums.length;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(mean(new int[]{1,2,3,4,5})); // 3.0
+    }
+}

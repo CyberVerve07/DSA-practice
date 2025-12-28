@@ -1,0 +1,21 @@
+import java.util.HashMap;
+
+public class ModeOfArray {
+    public static int mode(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int mode = nums[0], maxFreq = 0;
+
+        for (int x : nums) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+            if (map.get(x) > maxFreq) {
+                maxFreq = map.get(x);
+                mode = x;
+            }
+        }
+        return mode;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(mode(new int[]{1,2,2,3,3,3,4})); // 3
+    }
+}

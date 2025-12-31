@@ -1,0 +1,18 @@
+public class TrailingZeros {
+
+    public static int trailingZeros(int n) {
+        int count = 0;
+
+        while (n > 0) {
+            n /= 5;
+            count += n;
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(trailingZeros(5));   // 1
+        System.out.println(trailingZeros(10));  // 2
+        System.out.println(trailingZeros(100)); // 24
+    }
+}

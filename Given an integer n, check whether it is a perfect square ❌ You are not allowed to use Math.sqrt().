@@ -1,0 +1,23 @@
+public class PerfectSquare {
+
+    public static boolean isPerfectSquare(int n) {
+        if (n < 0) return false;
+
+        long low = 0, high = n;
+
+        while (low <= high) {
+            long mid = (low + high) / 2;
+            long sq = mid * mid;
+
+            if (sq == n) return true;
+            else if (sq < n) low = mid + 1;
+            else high = mid - 1;
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isPerfectSquare(16)); // true
+        System.out.println(isPerfectSquare(14)); // false
+    }
+}

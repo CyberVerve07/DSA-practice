@@ -1,0 +1,26 @@
+import java.util.HashMap;
+
+public class SubarraysWithXorK {
+
+    public static int countSubarrays(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int xor = 0, count = 0;
+
+        map.put(0, 1); // important base case
+
+        for (int num : nums) {
+            xor ^= num;
+            int need = xor ^ k;
+
+            count += map.getOrDefault(need, 0);
+            map.put(xor, map.getOrDefault(xor, 0) + 1);
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(countSubarrays(new int[]{4,2,2,6,4}, 6)); // 4
+        System.out.println(countSubarrays(new int[]{1,2,3,2}, 2));   // 2
+    }
+}

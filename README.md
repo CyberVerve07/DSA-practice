@@ -9,15 +9,7 @@ java-dsa-series/
 
 This repository contains my 71-day Data Structures & Algorithms journey in Java.
 Every day I solve at least one DSA problem and commit the code with tests, analysis, 
-and a short README for that day.
-
-## 📅 Progress Timeline
-| Day | Topic | Status |
-|-----|-------|--------|
-| 01  | Two Sum (HashMap) | ✅ Done |
-| 02  | Max Subarray (Kadane) | ✅ Done |
-| 03  | Two-Pointers + Sliding Window | ✅ Done |
-| 04+ | ... | Coming daily |
+and a short README for that d
 
 ## 📂 Folder Structure
 Each day has:
